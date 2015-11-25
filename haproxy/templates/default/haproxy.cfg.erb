@@ -132,7 +132,7 @@ backend ecs-cluster
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node[:opsworks][:layers]["ecs-cluster"][:instances].each do |backend| -%>
-  server <%= backend['name'] %> 
+  server <%= backend['public_dns_name'] %> 
   <% end -%>
 <% end -%>
 
