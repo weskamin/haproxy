@@ -125,13 +125,13 @@ backend static_servers
   <% end -%>
 <% end -%>
 
-<% if !node[:opsworks][:layers]["ecs-cluster"][:instances].empty? -%>
+<% if !node[:opsworks][:layers][:ecs-cluster][:instances].empty? -%>
 backend ecs-cluster
   balance <%= node[:haproxy][:balance] %>
   option redispatch
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
-  <% node[:opsworks][:layers]["ecs-cluster"][:instances].each do |backend| -%>
+  <% node[:opsworks][:layers][:ecs-cluster][:instances].each do |backend| -%>
   server <%= backend['name'] %> 
   <% end -%>
 <% end -%>
