@@ -133,7 +133,7 @@ backend ecs-cluster
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
   <% node['opsworks']['layers']['ecs-cluster']['instances'].each do |backends| for i  in 1..100 do if backends[i].nil? then break end -%>
   <% backend= backends[i]  -%>
-  server <%= backend['public_dns_name'] %>:80 weight <%= backend['backends'] || 10 %> maxconn <%= backend['backends'] * node[:haproxy][:maxcon_factor_static] %> check inter <%= node[:haproxy][:check_interval] %> 
+  server <%= backend['public_dns_name'] %>:80 weight <%= backend['public_dns_name'] || 10 %> maxconn <%= backend['public_dns_name'] * node[:haproxy][:maxcon_factor_static] %> check inter <%= node[:haproxy][:check_interval] %> 
                <% end -%>
             <% end -%>
         <% end -%>
