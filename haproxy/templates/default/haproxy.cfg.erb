@@ -125,19 +125,18 @@ backend static_servers
   <% end -%>
 <% end -%>
 
-     <% if !node['opsworks']['layers']['ecs-cluster']['instances'].empty? -%>
-        backend ecs-cluster
-          balance <%= node[:haproxy][:balance] %>
-          option redispatch
-          option forwardfor
-          option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
-          <% node ['opsworks']['layers']['ecs-cluster']['instances'].each do |backends| for i  in 1..100 do if backends[i].nil? then break end -%>
-           <% backend= backends[i]  -%>
-            server <%= backend['public-dns-name'] %> 
-           <% end -%>
+<% if !node['opsworks']['layers']['ecs-cluster']['instances'].empty? -%>
+backend ecs-cluster
+  balance <%= node[:haproxy][:balance] %>
+  option redispatch
+  option forwardfor
+  option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
+  <% node['opsworks']['layers']['ecs-cluster']['instances'].each do |backends| for i  in 1..100 do if backends[i].nil? then break end -%>
+  <% backend= backends[i]  -%>
+  server <%= backend['public_dns_name'] %>
+               <% end -%>
+            <% end -%>
         <% end -%>
-    <% end -%>
-
 
 <% if !node[:haproxy][:static_backends].empty? -%>  
 backend static_servers_ssl
