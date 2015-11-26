@@ -131,7 +131,7 @@ backend ecs-cluster
   option redispatch
   option forwardfor
   option httpchk <%= node[:haproxy][:health_check_method] %> <%= node[:haproxy][:health_check_url] %>
-  <% node data_hash['opsworks']['layers']['ecs-cluster']['instances'].each do |test1| test2=test1[1];p test2['ip'] end.each do |backend| -%>
+  <% node ['opsworks']['layers']['ecs-cluster']['instances'].each do |test1| test2=test1[1];p test2['ip'] end.each do |backend| -%>
   server <%= backend['public-dns-name'] %> 
   <% end -%>
 <% end -%>
